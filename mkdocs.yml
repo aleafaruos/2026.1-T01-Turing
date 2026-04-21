@@ -5,7 +5,7 @@ nav:
   - Atas de Reunião:
     - Ata 1: "atas-reuniao/ata-reuniao-17-04.md"
   - Documentos:
-    - visao geral do produto: "docs/visao-do-produto/visao-geral-do-produto.md"
+    - visao geral do produto: "visao-do-produto/visao-geral-do-produto.md"
 
 theme:
   name: material
