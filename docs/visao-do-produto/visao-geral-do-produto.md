@@ -7,7 +7,7 @@
 
 -                                       Figura 1 - Diagrama de Ishikawa
 
-![Diagrama de Ishikawa](<static\Diagrama de Espinha de Peixe.jpeg>)
+![Diagrama de Ishikawa](../static/Diagrama-Ishikawa.jpeg)
 
 -   
 Fonte: Elaborado pelos autores, 2026
@@ -19,3 +19,5 @@ Fonte: Elaborado pelos autores, 2026
 Os usuários do sistema são a comunidade acadêmica da FCTE, composta por solicitantes - alunos, professores, monitores, equipes de competição e empresas juniores - que consultam a disponibilidade e realizam reservas de espaços; e por gestores - secretaria, técnicos, porteiros e equipes de segurança - responsáveis por aprovar solicitações e gerenciar a ocupação dos espaços. O cliente do produto é a própria instituição, representada pela FCTE, interessada em otimizar o uso da infraestrutura e reduzir conflitos de ocupação.
 A adoção do sistema permitiria à FCTE centralizar a gestão de seus espaços físicos em uma única plataforma digital, reduzindo conflitos de ocupação, eliminando processos manuais de verificação e tornando o acesso aos espaços mais ágil e organizado para toda a comunidade acadêmica.
 A escolha do nome “Seu espaço UnB” foi pautada na intenção de traduzir a complexidade da gestão de espaços físicos em uma experiência intuitiva e integrada ao cotidiano acadêmico. Além de transmitir a ideia de pertencimento, autonomia e acessibilidade, esse nome coloca a comunidade no centro da experiência e rompe a percepção de que a busca por um espaço na faculdade é algo complexo e burocrático.
+
+
