@@ -9,7 +9,7 @@
 # Resumo
 A reunião foi focada principalmente em fechar o documento de visão do projeto. A equipe discutiu e organizou os cenários principais do sistema, incluindo cadastro, login e autenticação de usuários, edição de perfil, recuperação de senha, listagem e filtro de espaços, visualização de detalhes e disponibilidade em calendário, solicitação e cancelamento de reservas, aprovação/rejeição pelo administrador, histórico de reservas e painel administrativo.
 
-Também foi debatida a possibilidade de integração com Google Agenda e a ideia de notificações, mas sem fechar detalhes. Em paralelo, a equipe alinhou as sprints: priorizar primeiro as funcionalidades de usuário e autenticação, depois as funcionalidades de sala e reserva, deixando itens mais complexos para sprints posteriores. Kauan comentou que o documento ainda precisa de ajustes em algumas partes de cenário, backlog e explicação dos diagramas.
+Também foi debatida a possibilidade de integração com Google Agenda e a ideia de notificações, mas sem fechar detalhes. Em paralelo, a equipe alinhou as sprints: priorizar primeiro as funcionalidades de usuário e autenticação, depois as funcionalidades de sala e reserva, deixando itens mais complexos para sprints posteriores.
 
 No fim, a equipe falou sobre a necessidade de estudar arquitetura para a próxima etapa, revisar o que deve entrar na parte de testes/qualidade de software com o monitor, e manter o documento atualizado até a sexta-feira para entrega no fim de semana.
 
