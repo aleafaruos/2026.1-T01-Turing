@@ -41,7 +41,7 @@ A documentação pertinente foi devidamente atualizada.
 **Diagrama de Fluxo de trabalho**
 O Diagrama abaixo ilustra as atividades encadeadas do nosso processo adotado, desde a priorização até a entrega do incremento validado.
 
-![Diagrama de Fluxo de Trabalho](<static\Diagrama do Processo de Desenvolvimento de Software.jpeg>)
+![Diagrama de Fluxo de Trabalho](<../static/Diagrama-processo-software.jpeg>)
 
 
 
