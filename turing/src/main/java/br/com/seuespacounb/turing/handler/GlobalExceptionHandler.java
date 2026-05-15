@@ -1,11 +1,8 @@
 package br.com.seuespacounb.turing.handler;
 
-import br.com.seuespacounb.turing.exception.ConflictException;
-import br.com.seuespacounb.turing.exception.MethodArgumentNotValidException;
-import br.com.seuespacounb.turing.exception.NotFoundException;
+import br.com.seuespacounb.turing.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import br.com.seuespacounb.turing.exception.ErrorResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -38,5 +35,36 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
+
+    @ExceptionHandler({UnauthorizedException.class})
+    public ResponseEntity<ErrorResponse> handlerUnauthorizedException(UnauthorizedException exception){
+        ErrorResponse response = ErrorResponse.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler({ForbiddenException.class})
+    public ResponseEntity<ErrorResponse> handlerForbiddenException(ForbiddenException exception){
+        ErrorResponse response = ErrorResponse.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.FORBIDDEN.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler({MethodNotAllowedException.class})
+    public ResponseEntity<ErrorResponse> handlerMethodNotAllowedException(MethodNotAllowedException exception){
+        ErrorResponse response = ErrorResponse.builder()
+                .message(exception.getMessage())
+                .status(HttpStatus.METHOD_NOT_ALLOWED.value())
+                .build();
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
+    }
+
 }
+
+
+
 
