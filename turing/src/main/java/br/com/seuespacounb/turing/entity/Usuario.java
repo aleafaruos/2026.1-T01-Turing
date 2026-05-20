@@ -24,7 +24,7 @@ public class Usuario implements UserDetails {
     private Long id;
 
     private String name;
-    private String emailInstTitucional;
+    private String email;
     private String cpf;
     private String senha;
 
