@@ -34,6 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
+        System.out.println("ENTROU NO LOGIN");
 
         UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
         Authentication authentication = authenticationManager.authenticate(userAndPass);
@@ -41,6 +42,7 @@ public class AuthController {
         Usuario usuario = (Usuario) authentication.getPrincipal();
         String token = tokenConfig.generateToken(usuario);
 
+        System.out.println("TOKEN GERADO: " + token);
 
         return ResponseEntity.ok(new LoginResponse(token));
     }
