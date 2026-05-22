@@ -1,3 +1,8 @@
 spring:
   application:
     name: turing
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET}
