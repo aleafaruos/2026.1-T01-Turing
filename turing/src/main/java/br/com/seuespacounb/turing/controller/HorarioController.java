@@ -2,6 +2,7 @@ package br.com.seuespacounb.turing.controller;
 
 import br.com.seuespacounb.turing.dto.HorarioSalaRequestDTO;
 import br.com.seuespacounb.turing.dto.HorarioSalaResponseDTO;
+import br.com.seuespacounb.turing.exception.ConflictException;
 import br.com.seuespacounb.turing.service.HorarioSalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,14 @@ public class HorarioController {
     }
 
     @PostMapping
-    public ResponseEntity<String> salvar(@RequestBody HorarioSalaRequestDTO horarioSalaRequestDTO) {
-        horarioSalaService.salvarHorario(horarioSalaRequestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Horário agendado");
+    public ResponseEntity<HorarioSalaResponseDTO> salvar(@RequestBody HorarioSalaRequestDTO horarioSalaRequestDTO) throws ConflictException {
+        HorarioSalaResponseDTO horarioSalvo =  horarioSalaService.salvarHorario(horarioSalaRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(horarioSalvo);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> excluir(@PathVariable Long id) {
-        horarioSalaService.excluirHorario(id);
+        horarioSalaService.excluirHorarioPorSala(id);
         return ResponseEntity.ok("Horário removido");
     }
 }

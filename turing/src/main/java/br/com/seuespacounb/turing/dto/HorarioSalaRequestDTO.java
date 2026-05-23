@@ -1,5 +1,7 @@
 package br.com.seuespacounb.turing.dto;
 
+import br.com.seuespacounb.turing.entity.Sala;
+
 import java.time.LocalDateTime;
 
 public record HorarioSalaRequestDTO(
@@ -7,5 +9,5 @@ public record HorarioSalaRequestDTO(
     LocalDateTime fim,
     String status,
     String descricaoOcupacao,
-    Long salaId
+    Sala sala
 ) {}
