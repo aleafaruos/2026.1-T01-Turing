@@ -2,7 +2,7 @@ package br.com.seuespacounb.turing.dto;
 
 import java.time.LocalDateTime;
 
-public record HorarioSalaResponseDto(
+public record HorarioSalaResponseDTO(
         Long id,
         LocalDateTime inicio,
         LocalDateTime fim,

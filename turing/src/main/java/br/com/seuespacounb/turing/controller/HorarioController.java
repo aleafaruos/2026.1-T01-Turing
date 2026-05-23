@@ -1,7 +1,7 @@
 package br.com.seuespacounb.turing.controller;
 
-import br.com.seuespacounb.turing.dto.HorarioSalaRequestDto;
-import br.com.seuespacounb.turing.dto.HorarioSalaResponseDto;
+import br.com.seuespacounb.turing.dto.HorarioSalaRequestDTO;
+import br.com.seuespacounb.turing.dto.HorarioSalaResponseDTO;
 import br.com.seuespacounb.turing.service.HorarioSalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,14 +19,14 @@ public class HorarioController {
     private final HorarioSalaService horarioSalaService;
 
     @GetMapping("/sala/{salaId}")
-    public ResponseEntity<List<HorarioSalaResponseDto>> buscarPorSala(@PathVariable Long salaId) {
-        List<HorarioSalaResponseDto> horarios = horarioSalaService.listarHorariosPorSala(salaId);
+    public ResponseEntity<List<HorarioSalaResponseDTO>> buscarPorSala(@PathVariable Long salaId) {
+        List<HorarioSalaResponseDTO> horarios = horarioSalaService.listarHorariosPorSala(salaId);
         return ResponseEntity.ok(horarios);
     }
 
     @PostMapping
-    public ResponseEntity<String> salvar(@RequestBody HorarioSalaRequestDto horarioSalaRequestDto) {
-        horarioSalaService.salvarHorario(horarioSalaRequestDto);
+    public ResponseEntity<String> salvar(@RequestBody HorarioSalaRequestDTO horarioSalaRequestDTO) {
+        horarioSalaService.salvarHorario(horarioSalaRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("Horário agendado");
     }
 
