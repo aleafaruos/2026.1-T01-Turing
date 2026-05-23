@@ -23,8 +23,8 @@ public class TokenConfig {
         return JWT.create()
                 .withClaim("userId", usuario.getId())
                 .withSubject(usuario.getEmail())
-                .withClaim("role", usuario.getTipoUsuario().name())
-                .withExpiresAt(Instant.now().plusSeconds(3600))//access token dura 1 hora, qnd acaba loga denovo
+//                .withClaim("role", usuario.getTipoUsuario().name())
+                .withExpiresAt(Instant.now().plusSeconds(3600))
                 .withIssuedAt(Instant.now())
                 .sign(algorithm);
     }
@@ -33,14 +33,16 @@ public class TokenConfig {
         try {
 
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            DecodedJWT decode = JWT.require(algorithm)
-                    .build().verify(token);
 
-            return Optional.of(new JWTUserData(
-                    decode.getClaim("userId").asLong(),
-                    decode.getSubject(),
-                    decode.getClaim("role").asString()
-            ));
+            DecodedJWT decode = JWT.require(algorithm)
+                    .build()
+                    .verify(token);
+
+            return Optional.of(JWTUserData.builder()
+                    .userId(decode.getClaim("userId").asLong())
+                    .email(decode.getSubject())
+                    .build()
+            );
 
         }catch (JWTVerificationException ex){
             return Optional.empty();

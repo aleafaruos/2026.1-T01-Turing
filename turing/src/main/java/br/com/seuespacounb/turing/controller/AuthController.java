@@ -42,8 +42,7 @@ public class AuthController {
         Usuario usuario = (Usuario) authentication.getPrincipal();
         String token = tokenConfig.generateToken(usuario);
 
-        System.out.println("TOKEN GERADO: " + token);
-
+//        System.out.println("TOKEN GERADO: " + token);
         return ResponseEntity.ok(new LoginResponse(token));
     }
 
