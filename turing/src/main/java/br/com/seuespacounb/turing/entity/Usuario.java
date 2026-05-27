@@ -36,11 +36,11 @@ public class Usuario implements UserDetails {
         if (this.tipoUsuario == TipoUsuario.ADMIN) {
             return List.of(
                     new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_CLIENTE")
+                    new SimpleGrantedAuthority("ROLE_CLIENT")
             );
         }
 
-        return List.of(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
     }
 
     @Override

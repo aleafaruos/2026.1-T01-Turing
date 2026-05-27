@@ -37,12 +37,20 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
 
-                        .requestMatchers("/adm/**").hasRole("ADMIN")
-                        .requestMatchers("/usuarios/**").hasAnyRole("ADMIN", "CLIENT")
+
+                        .requestMatchers(HttpMethod.PUT, "/usuarios").hasAnyRole("CLIENT", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios").hasAnyRole("CLIENT", "ADMIN")
+
+
+                        .requestMatchers(HttpMethod.GET, "/usuarios/adm").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/adm/encontrarPorEmail").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/adm/{idUsuarioParaAlterar}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/adm/{idUsuarioParaDeletar}").hasRole("ADMIN")
+
 
                         .anyRequest().authenticated())
 
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)//deixa publico somente requisições post para autenticação, restante é necessario esta logado
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -53,6 +61,6 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder(); //criptografia da senha do usuario
+        return new BCryptPasswordEncoder();
     }
 }

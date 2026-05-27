@@ -4,6 +4,7 @@ import br.com.seuespacounb.turing.dto.UsuarioDTO;
 import br.com.seuespacounb.turing.entity.TipoUsuario;
 import br.com.seuespacounb.turing.entity.Usuario;
 import br.com.seuespacounb.turing.exception.NotFoundException;
+import br.com.seuespacounb.turing.exception.UnauthorizedException;
 import br.com.seuespacounb.turing.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -24,19 +25,19 @@ public class UsuarioService {
         Usuario usuario = usuarioRepository.findById(idUsuarioLogado)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
-        if (usuarioDTO.name() != null){
+        if (usuarioDTO.name() != null) {
             usuario.setName(usuarioDTO.name());
         }
 
-        if (usuarioDTO.email() != null){
+        if (usuarioDTO.email() != null) {
             usuario.setEmail(usuarioDTO.email());
         }
 
-        if (usuarioDTO.cpf() != null){
+        if (usuarioDTO.cpf() != null) {
             usuario.setCpf(usuarioDTO.cpf());
         }
 
-        if (usuarioDTO.senha() != null){
+        if (usuarioDTO.senha() != null) {
             usuario.setSenha(passwordEncoder.encode(usuarioDTO.senha()));
         }
 
@@ -96,7 +97,7 @@ public class UsuarioService {
         usuarioRepository.save(usuarioCliente);
     }
 
-    public void admDeletarUsuario(Long idAdm, Long idUsuarioDeletado) throws NotFoundException {
+    public void admDeletarUsuario(Long idAdm, Long idUsuarioDeletado) throws NotFoundException, UnauthorizedException {
         Usuario usuarioAdm = usuarioRepository.findById(idAdm)
                 .orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
 
@@ -106,6 +107,11 @@ public class UsuarioService {
         if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADMIN) {
             throw new AccessDeniedException("Usuário não é um administrador");
         }
+
+        if (usuarioCliente.getTipoUsuario() == TipoUsuario.ADMIN) {
+            throw new UnauthorizedException("Não pode deletar um administrador");
+        }
+
 
         usuarioRepository.delete(usuarioCliente);
     }

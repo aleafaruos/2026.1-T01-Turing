@@ -3,6 +3,7 @@ package br.com.seuespacounb.turing.controller;
 import br.com.seuespacounb.turing.dto.UsuarioDTO;
 import br.com.seuespacounb.turing.entity.Usuario;
 import br.com.seuespacounb.turing.exception.NotFoundException;
+import br.com.seuespacounb.turing.exception.UnauthorizedException;
 import br.com.seuespacounb.turing.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public void alterarDadosUsuario(
             @AuthenticationPrincipal Usuario usuarioLogado,
             @RequestBody UsuarioDTO usuarioDTO
@@ -72,11 +73,11 @@ public class UsuarioController {
     public void admDeletarUsuario(
             @PathVariable Long idUsuarioParaDeletar,
             @AuthenticationPrincipal Usuario usuarioLogado
-    ) throws NotFoundException {
+    ) throws NotFoundException, UnauthorizedException {
         usuarioService.admDeletarUsuario(usuarioLogado.getId(), idUsuarioParaDeletar);
     }
 
-    @GetMapping
+    @GetMapping("/adm/encontrarPorEmail")
     @ResponseStatus(HttpStatus.OK)
     public Usuario admEncontrarUsuarioPorEmail(
             @RequestParam String email,
