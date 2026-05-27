@@ -1,8 +1,8 @@
-package br.com.seuespacounb.turing.dto;
+package br.com.seuespacounb.turing.dto.request;
 
 import br.com.seuespacounb.turing.entity.TipoUsuario;
 
-public record UsuarioDTO(
+public record AtualizarUsuarioRequestDTO(
         String name,
         String email,
         String cpf,

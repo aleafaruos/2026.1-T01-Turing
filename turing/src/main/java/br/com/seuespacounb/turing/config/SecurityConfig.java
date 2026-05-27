@@ -38,14 +38,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
 
 
-                        .requestMatchers(HttpMethod.PUT, "/usuarios").hasAnyRole("CLIENT", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios").hasAnyRole("CLIENT", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios").hasAnyRole("CLIENTE", "ADM")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios").hasAnyRole("CLIENTE", "ADM")
 
 
-                        .requestMatchers(HttpMethod.GET, "/usuarios/adm").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/usuarios/adm/encontrarPorEmail").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/usuarios/adm/{idUsuarioParaAlterar}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/usuarios/adm/{idUsuarioParaDeletar}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/adm").hasRole("ADM")
+                        .requestMatchers(HttpMethod.GET, "/usuarios/adm/encontrarPorEmail").hasRole("ADM")
+                        .requestMatchers(HttpMethod.PUT, "/usuarios/adm/{idUsuarioParaAlterar}").hasRole("ADM")
+                        .requestMatchers(HttpMethod.DELETE, "/usuarios/adm/{idUsuarioParaDeletar}").hasRole("ADM")
 
 
                         .anyRequest().authenticated())

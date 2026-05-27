@@ -1,6 +1,10 @@
 package br.com.seuespacounb.turing.service;
 
+import br.com.seuespacounb.turing.config.TokenConfig;
+import br.com.seuespacounb.turing.dto.AdmGetUsuarioDTO;
 import br.com.seuespacounb.turing.dto.UsuarioDTO;
+import br.com.seuespacounb.turing.dto.request.AtualizarUsuarioRequestDTO;
+import br.com.seuespacounb.turing.dto.response.AtualizarUsuarioResponseDTO;
 import br.com.seuespacounb.turing.entity.TipoUsuario;
 import br.com.seuespacounb.turing.entity.Usuario;
 import br.com.seuespacounb.turing.exception.NotFoundException;
@@ -19,29 +23,46 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
+    private final TokenConfig tokenConfig;
 
-    public void alterarDadosProprioUsuario(Long idUsuarioLogado, UsuarioDTO usuarioDTO) throws NotFoundException {
+    public AtualizarUsuarioResponseDTO alterarDadosProprioUsuario(Long idUsuarioLogado, AtualizarUsuarioRequestDTO dados) throws NotFoundException {
 
         Usuario usuario = usuarioRepository.findById(idUsuarioLogado)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
 
-        if (usuarioDTO.name() != null) {
-            usuario.setName(usuarioDTO.name());
+        if (dados.name() != null) {
+            usuario.setName(dados.name());
         }
 
-        if (usuarioDTO.email() != null) {
-            usuario.setEmail(usuarioDTO.email());
+        if (dados.email() != null) {
+            usuario.setEmail(dados.email());
         }
 
-        if (usuarioDTO.cpf() != null) {
-            usuario.setCpf(usuarioDTO.cpf());
+        if (dados.cpf() != null) {
+            usuario.setCpf(dados.cpf());
         }
 
-        if (usuarioDTO.senha() != null) {
-            usuario.setSenha(passwordEncoder.encode(usuarioDTO.senha()));
+        if (dados.senha() != null) {
+            usuario.setSenha(passwordEncoder.encode(dados.senha()));
+        }
+
+        if (dados.tipoUsuario() != null) {
+            usuario.setTipoUsuario(dados.tipoUsuario());
         }
 
         usuarioRepository.save(usuario);
+
+        String novoToken = tokenConfig.generateToken(usuario);
+
+        UsuarioDTO usuarioDTO = new UsuarioDTO(
+                usuario.getName(),
+                usuario.getEmail(),
+                usuario.getCpf(),
+                usuario.getSenha(),
+                usuario.getTipoUsuario()
+        );
+
+        return new AtualizarUsuarioResponseDTO(usuarioDTO, novoToken);
     }
 
     public void deletarDadosProprioUsuario(Long idUsuarioLogado) throws NotFoundException {
@@ -56,15 +77,24 @@ public class UsuarioService {
 
 
 
-    public List<Usuario> getUsuarios(Long idAdm) throws NotFoundException {
+    public List<AdmGetUsuarioDTO> getUsuarios(Long idAdm) throws NotFoundException {
         Usuario usuarioAdm = usuarioRepository.findById(idAdm)
                 .orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
 
-        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADMIN) {
+        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADM) {
             throw new AccessDeniedException("Usuário não é um administrador");
         }
 
-        return usuarioRepository.findAll();
+        return usuarioRepository.findAll()
+                .stream()
+                .map(usuario -> new AdmGetUsuarioDTO(
+                        usuario.getId(),
+                        usuario.getName(),
+                        usuario.getEmail(),
+                        usuario.getCpf(),
+                        usuario.getTipoUsuario()
+                ))
+                .toList();
     }
 
     public void admAlterarDadosUsuario(Long idAdm, Long idUsuarioPraAlterar, UsuarioDTO usuarioDTO) throws NotFoundException {
@@ -74,7 +104,7 @@ public class UsuarioService {
         Usuario usuarioCliente = usuarioRepository.findById(idUsuarioPraAlterar)
                 .orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
 
-        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADMIN) {
+        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADM) {
             throw new AccessDeniedException("Usuário não é um administrador");
         }
 
@@ -104,11 +134,11 @@ public class UsuarioService {
         Usuario usuarioCliente = usuarioRepository.findById(idUsuarioDeletado)
                 .orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
 
-        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADMIN) {
+        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADM) {
             throw new AccessDeniedException("Usuário não é um administrador");
         }
 
-        if (usuarioCliente.getTipoUsuario() == TipoUsuario.ADMIN) {
+        if (usuarioCliente.getTipoUsuario() == TipoUsuario.ADM) {
             throw new UnauthorizedException("Não pode deletar um administrador");
         }
 
@@ -116,18 +146,24 @@ public class UsuarioService {
         usuarioRepository.delete(usuarioCliente);
     }
 
-    public Usuario admEncontrarUsuarioPorEmail(Long idAdm, String email) throws NotFoundException {
+    public AdmGetUsuarioDTO admEncontrarUsuarioPorEmail(Long idAdm, String email) throws NotFoundException {
 
         Usuario usuarioAdm = usuarioRepository.findById(idAdm)
                 .orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
 
-        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADMIN) {
+        if (usuarioAdm.getTipoUsuario() != TipoUsuario.ADM) {
             throw new AccessDeniedException("Usuário não é um administrador");
         }
 
         Usuario usuarioCliente = usuarioRepository.findUserByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Usuario não encontrado"));
 
-        return usuarioCliente;
+        return new AdmGetUsuarioDTO(
+                usuarioCliente.getId(),
+                usuarioCliente.getName(),
+                usuarioCliente.getEmail(),
+                usuarioCliente.getCpf(),
+                usuarioCliente.getTipoUsuario()
+        );
     }
 }

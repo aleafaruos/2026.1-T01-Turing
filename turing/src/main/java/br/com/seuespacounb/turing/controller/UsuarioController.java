@@ -1,6 +1,9 @@
 package br.com.seuespacounb.turing.controller;
 
+import br.com.seuespacounb.turing.dto.AdmGetUsuarioDTO;
 import br.com.seuespacounb.turing.dto.UsuarioDTO;
+import br.com.seuespacounb.turing.dto.request.AtualizarUsuarioRequestDTO;
+import br.com.seuespacounb.turing.dto.response.AtualizarUsuarioResponseDTO;
 import br.com.seuespacounb.turing.entity.Usuario;
 import br.com.seuespacounb.turing.exception.NotFoundException;
 import br.com.seuespacounb.turing.exception.UnauthorizedException;
@@ -23,12 +26,12 @@ public class UsuarioController {
 
     @PutMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void alterarDadosUsuario(
+    public AtualizarUsuarioResponseDTO alterarDadosUsuario(
             @AuthenticationPrincipal Usuario usuarioLogado,
-            @RequestBody UsuarioDTO usuarioDTO
+            @RequestBody AtualizarUsuarioRequestDTO dados
     ) throws NotFoundException {
 
-        usuarioService.alterarDadosProprioUsuario(usuarioLogado.getId(), usuarioDTO);
+       return usuarioService.alterarDadosProprioUsuario(usuarioLogado.getId(), dados);
     }
 
     @DeleteMapping
@@ -46,7 +49,7 @@ public class UsuarioController {
 
     @GetMapping("/adm")
     @ResponseStatus(HttpStatus.OK)
-    public List<Usuario> admGetUsuarios(
+    public List<AdmGetUsuarioDTO> admGetUsuarios(
             @AuthenticationPrincipal Usuario usuarioLogado
     ) throws NotFoundException {
 
@@ -79,7 +82,7 @@ public class UsuarioController {
 
     @GetMapping("/adm/encontrarPorEmail")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario admEncontrarUsuarioPorEmail(
+    public AdmGetUsuarioDTO admEncontrarUsuarioPorEmail(
             @RequestParam String email,
             @AuthenticationPrincipal Usuario usuarioLogado
     ) throws NotFoundException {
