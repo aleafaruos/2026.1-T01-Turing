@@ -41,4 +41,9 @@ public class SalaController {
     public void deletarSala(@PathVariable Long id){
         service.deletarSala(id);
     }
+
+    @GetMapping("/filtrar")
+        public List<Sala> filtrarPorNome(@RequestParam String nome){
+    return service.filtrarPorNome(nome);
+}
 }

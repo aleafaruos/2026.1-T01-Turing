@@ -40,4 +40,7 @@ public class SalaService {
     public void deletarSala(Long id){
         repository.deleteById(id);
     }
+    public List<Sala> filtrarPorNome(String nome){
+    return repository.findByNomeContainingIgnoreCase(nome);
+    }
 }
