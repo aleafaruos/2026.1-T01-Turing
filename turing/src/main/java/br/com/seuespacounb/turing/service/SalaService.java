@@ -1,6 +1,9 @@
 package br.com.seuespacounb.turing.service;
 
+import br.com.seuespacounb.turing.dto.SalaRequestDTO;
+import br.com.seuespacounb.turing.dto.SalaResponseDTO;
 import br.com.seuespacounb.turing.entity.Sala;
+import br.com.seuespacounb.turing.mapstruct.SalaMapper;
 import br.com.seuespacounb.turing.repository.SalaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,35 +15,39 @@ import java.util.List;
 public class SalaService {
 
     private final SalaRepository repository;
+    private final SalaMapper mapper; 
 
-    public Sala salvarSala(Sala novaSala){
-        return repository.saveAndFlush(novaSala);
+    public SalaResponseDTO salvarSala(SalaRequestDTO requestDTO){
+        Sala novaSala = mapper.toEntity(requestDTO);
+        return mapper.toResponseDTO(repository.saveAndFlush(novaSala));
     }
 
-    public Sala buscarSalaPorId(Long id){
-        return repository.findById(id)
+    public SalaResponseDTO buscarSalaPorId(Long id){
+        Sala sala = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
+        return mapper.toResponseDTO(sala);
     }
 
-    public List<Sala> listarSalas(){
-        return repository.findAll();
+    public List<SalaResponseDTO> listarSalas(){
+        return mapper.toListResponseDTO(repository.findAll());
     }
 
-    public Sala atualizarSala(Long id, Sala salaAtualizada){
+    public SalaResponseDTO atualizarSala(Long id, SalaRequestDTO requestDTO){
+        Sala salaExistente = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sala não encontrada"));
 
-        Sala salaExistente = buscarSalaPorId(id);
+        salaExistente.setNome(requestDTO.nome());
+        salaExistente.setCapacidade(requestDTO.capacidade());
+        salaExistente.setLocalizacao(requestDTO.localizacao());
 
-        salaExistente.setNome(salaAtualizada.getNome());
-        salaExistente.setCapacidade(salaAtualizada.getCapacidade());
-        salaExistente.setLocalizacao(salaAtualizada.getLocalizacao());
-
-        return repository.saveAndFlush(salaExistente);
+        return mapper.toResponseDTO(repository.saveAndFlush(salaExistente));
     }
 
     public void deletarSala(Long id){
         repository.deleteById(id);
     }
-    public List<Sala> filtrarPorNome(String nome){
-    return repository.findByNomeContainingIgnoreCase(nome);
+
+    public List<SalaResponseDTO> filtrarPorNome(String nome){
+        return mapper.toListResponseDTO(repository.findByNomeContainingIgnoreCase(nome));
     }
 }

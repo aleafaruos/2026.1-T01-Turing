@@ -1,6 +1,9 @@
 package br.com.seuespacounb.turing.controller;
 
-import br.com.seuespacounb.turing.entity.Sala;
+import br.com.seuespacounb.turing.dto.SalaRequestDTO;
+import br.com.seuespacounb.turing.dto.SalaResponseDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import br.com.seuespacounb.turing.service.SalaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,35 +18,36 @@ public class SalaController {
     private final SalaService service;
 
     @PostMapping
-    public Sala salvarSala(@RequestBody Sala novaSala){
-        return service.salvarSala(novaSala);
+    public ResponseEntity<SalaResponseDTO> salvarSala(@RequestBody SalaRequestDTO requestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.salvarSala(requestDTO));
     }
 
     @GetMapping
-    public List<Sala> listarSalas(){
-        return service.listarSalas();
+    public ResponseEntity<List<SalaResponseDTO>> listarSalas(){
+        return ResponseEntity.ok(service.listarSalas());
     }
 
     @GetMapping("/{id}")
-    public Sala buscarSalaPorId(@PathVariable Long id){
-        return service.buscarSalaPorId(id);
+    public ResponseEntity<SalaResponseDTO> buscarSalaPorId(@PathVariable Long id){
+        return ResponseEntity.ok(service.buscarSalaPorId(id));
     }
 
     @PutMapping("/{id}")
-    public Sala atualizarSala(
+    public ResponseEntity<SalaResponseDTO> atualizarSala(
             @PathVariable Long id,
-            @RequestBody Sala salaAtualizada){
+            @RequestBody SalaRequestDTO requestDTO){
 
-        return service.atualizarSala(id, salaAtualizada);
+        return ResponseEntity.ok(service.atualizarSala(id, requestDTO));
     }
 
     @DeleteMapping("/{id}")
-    public void deletarSala(@PathVariable Long id){
+    public ResponseEntity<Void> deletarSala(@PathVariable Long id){
         service.deletarSala(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/filtrar")
-        public List<Sala> filtrarPorNome(@RequestParam String nome){
-    return service.filtrarPorNome(nome);
+        public ResponseEntity<List<SalaResponseDTO>> filtrarPorNome(@RequestParam String nome){
+    return ResponseEntity.ok(service.filtrarPorNome(nome));
 }
 }
