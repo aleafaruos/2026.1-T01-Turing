@@ -3,42 +3,55 @@ package br.com.seuespacounb.turing.service;
 import br.com.seuespacounb.turing.dto.HorarioSalaRequestDTO;
 import br.com.seuespacounb.turing.dto.HorarioSalaResponseDTO;
 import br.com.seuespacounb.turing.entity.HorarioSala;
-import br.com.seuespacounb.turing.entity.StatusHorario;
+import br.com.seuespacounb.turing.entity.Sala;
 import br.com.seuespacounb.turing.exception.ConflictException;
+import br.com.seuespacounb.turing.exception.NotFoundException;
 import br.com.seuespacounb.turing.mapstruct.HorarioSalaMapper;
 import br.com.seuespacounb.turing.repository.HorarioSalaRepository;
+import br.com.seuespacounb.turing.repository.SalaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class HorarioSalaService {
-    private final HorarioSalaRepository repository;
+public class
+
+HorarioSalaService {
+    private final HorarioSalaRepository horarioRepository;
+    private final SalaRepository salaRepository;
     private final HorarioSalaMapper mapper;
 
-    //mudar para o DTO depois
-    public HorarioSalaResponseDTO salvarHorario(HorarioSalaRequestDTO horarioRequestDTO)throws ConflictException {
-        List<HorarioSala> horariosDaSala = repository.findBySalaId(horarioRequestDTO.sala().getId());
-        boolean conflitoHorario = horariosDaSala.stream()
-                .anyMatch(
-                        horarioExistente -> horarioRequestDTO.inicio().isBefore(horarioExistente.getFim())
-                        && horarioRequestDTO.fim().isAfter(horarioExistente.getInicio()));
+    public HorarioSalaResponseDTO salvarHorario(HorarioSalaRequestDTO horarioRequestDTO)throws ConflictException, NotFoundException {
+        Sala sala = salaRepository.findById(horarioRequestDTO.salaId())
+                .orElseThrow(()-> new NotFoundException("A sala não foi encontrada"));
+        HorarioSala novoHorario = mapper.paraHorarioSala(horarioRequestDTO);
+        novoHorario.setSala(sala);
+        boolean conflitoHorario = horarioRepository.conflito(novoHorario.getSala().getId(), novoHorario.getFimPeriodo(),
+                novoHorario.getInicioPeriodo(), novoHorario.getDiaSemana(),
+                novoHorario.getFimHora(), novoHorario.getInicioHora());
         if(conflitoHorario) {
-            throw new ConflictException("Infelizmente não foi possivel salvar este horário para esta sala, pois houve conflito de horário");
+            throw new ConflictException("Infelizmente não foi possivel salvar este horário, pois houve conflito de horário na sala escolhida.");
         }
-        HorarioSala novoHorario = mapper.paraHoriaroSala(horarioRequestDTO);
-        novoHorario.setStatus(StatusHorario.VAGO);
-        return mapper.praHorarioResponseDTO(repository.saveAndFlush(novoHorario));
+        return mapper.paraHorarioResponseDTO(horarioRepository.saveAndFlush(novoHorario));
     }
 
-    public List<HorarioSalaResponseDTO> listarHorariosPorSala(Long sala_id){
-        return mapper.paraListHorarioResponseDTO(repository.findBySalaId(sala_id));
+    @Transactional(readOnly = true)
+    public List<HorarioSalaResponseDTO> listarHorariosPorSala(Long salaId){
+        return mapper.paraListaHorarioResponseDTO(horarioRepository.findBySalaId(salaId));
     }
 
-    public void excluirHorarioPorSala(Long sala_id){
-        repository.deleteBySalaId(sala_id);
+    @Transactional
+    public void excluirHorarioPorSala(Long salaId, LocalDate inicioPeriodo, DayOfWeek diaSemana, LocalTime inicioHora)throws NotFoundException{
+        boolean existeHorario = horarioRepository.existsBySalaIdAndInicioPeriodoAndDiaSemanaAndInicioHora(
+                        salaId, inicioPeriodo, diaSemana, inicioHora);
+        if(!existeHorario){
+            throw new NotFoundException("Não foi possivel excluir, pois o horário informado não foi encontrado.");
+        }
+        horarioRepository.deleteBySalaIdAndInicioPeriodoAndDiaSemanaAndInicioHora(salaId, inicioPeriodo, diaSemana, inicioHora);
     }
-
-
 }
