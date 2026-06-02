@@ -8,4 +8,4 @@ public record SalaResponseDTO(
         int capacidade,
         String localizacao,
         List<HorarioSalaResponseDTO> horarios
-) { }
+) {}
