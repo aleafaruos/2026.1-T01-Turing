@@ -28,12 +28,13 @@
 	</scm>
 	<properties>
 		<java.version>17</java.version>
+		<org.mapstruct.version>1.6.3</org.mapstruct.version>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
-			<version>1.5.5.Final</version>
+			<version>${org.mapstruct.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -116,11 +117,11 @@
 				<configuration>
 					<source>17</source>
 					<target>17</target>
-					<annotationProcessing>
-						<profile name="Maven default annotation processors profile" enabled="true">
-							<sourceOutputDir name="target/generated-sources/annotations" />
-						</profile>
-					</annotationProcessing>
+<!--					<annotationProcessing>-->
+<!--						<profile name="Maven default annotation processors profile" enabled="true">-->
+<!--							<sourceOutputDir name="target/generated-sources/annotations" />-->
+<!--						</profile>-->
+<!--					</annotationProcessing>-->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>
