@@ -1,5 +1,6 @@
 package br.com.seuespacounb.turing.controller;
 
+import br.com.seuespacounb.turing.dto.AtualizarStatusRequest;
 import br.com.seuespacounb.turing.dto.HorarioSalaRequestDTO;
 import br.com.seuespacounb.turing.dto.HorarioSalaResponseDTO;
 import br.com.seuespacounb.turing.exception.ConflictException;
@@ -45,5 +46,15 @@ public class HorarioController {
             @RequestParam LocalTime inicioHora) throws NotFoundException {
         horarioSalaService.excluirHorarioPorSala(id, inicioPeriodo, diaSemana, inicioHora);
         return ResponseEntity.ok("Horário removido");
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<HorarioSalaResponseDTO> atualizarStatus(
+            @PathVariable Long id,
+            @RequestBody @Valid AtualizarStatusRequest request) throws NotFoundException {
+
+        HorarioSalaResponseDTO horarioAtualizado = horarioSalaService.atualizarStatusHorario(id, request.status());
+
+        return ResponseEntity.ok(horarioAtualizado);
     }
 }
