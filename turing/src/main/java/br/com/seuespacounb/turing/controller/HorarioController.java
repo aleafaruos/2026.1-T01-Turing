@@ -37,8 +37,12 @@ public class HorarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(horarioSalvo);
     }
 
-    @DeleteMapping("/{id}/{inicioPeriodo}/{diaSemana}/{inicioHora}")
-    public ResponseEntity<String> excluir(@PathVariable Long id, @PathVariable LocalDate inicioPeriodo, @PathVariable DayOfWeek diaSemana, @PathVariable LocalTime inicioHora) throws NotFoundException {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> excluir(
+            @PathVariable Long id,
+            @RequestParam LocalDate inicioPeriodo,
+            @RequestParam DayOfWeek diaSemana,
+            @RequestParam LocalTime inicioHora) throws NotFoundException {
         horarioSalaService.excluirHorarioPorSala(id, inicioPeriodo, diaSemana, inicioHora);
         return ResponseEntity.ok("Horário removido");
     }
