@@ -1,7 +1,9 @@
 package br.com.seuespacounb.turing.controller;
 
+import br.com.seuespacounb.turing.dto.FiltroSalaRequest;
 import br.com.seuespacounb.turing.dto.SalaRequestDTO;
 import br.com.seuespacounb.turing.dto.SalaResponseDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import br.com.seuespacounb.turing.service.SalaService;
@@ -50,4 +52,16 @@ public class SalaController {
         public ResponseEntity<List<SalaResponseDTO>> filtrarPorNome(@RequestParam String nome){
     return ResponseEntity.ok(service.filtrarPorNome(nome));
 }
+
+    @GetMapping("/filtroOrdenacao")
+    public ResponseEntity<Page<SalaResponseDTO>> pesquisarHorario(
+            @ModelAttribute FiltroSalaRequest filtro,
+            @RequestParam(defaultValue = "0")int pagina,
+            @RequestParam(defaultValue = "10")int tamanho,
+            @RequestParam(defaultValue = "nome")String ordenacao,
+            @RequestParam(defaultValue = "asc")String direcao
+    ){
+        Page<SalaResponseDTO> salas = service.filtrarOrdenar(filtro, pagina,tamanho,ordenacao, direcao);
+        return ResponseEntity.ok(salas);
+    }
 }

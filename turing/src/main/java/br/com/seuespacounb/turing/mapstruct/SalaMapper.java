@@ -8,7 +8,7 @@ import br.com.seuespacounb.turing.dto.SalaRequestDTO;
 import br.com.seuespacounb.turing.dto.SalaResponseDTO;
 import br.com.seuespacounb.turing.entity.Sala;
 
-@Mapper(componentModel = "spring", uses = {HorarioSalaMapper.class})
+@Mapper(componentModel = "spring")
 public interface SalaMapper {
     Sala toEntity(SalaRequestDTO dto);
     SalaResponseDTO toResponseDTO(Sala entity);
