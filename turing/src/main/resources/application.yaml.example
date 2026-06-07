@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: turing
+  datasource:
+    url: jdbc:mysql://localhost:PORTA/seuEspacoUnB?createDatabaseIfNotExist=true
+    username: SEU_USUARIO
+    password: SUA_SENHA
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+api:
+  security:
+    token:
+      secret: SEU_JWT_SECRET
