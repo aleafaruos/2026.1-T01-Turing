@@ -12,10 +12,10 @@ function Login() {
   async function handleLogin() {
     setErro('')
     try {
-      const resposta = await fetch('http://localhost:8080/usuarios/login', {
+      const resposta = await fetch('http://localhost:8080/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usuario, senha })
+        body: JSON.stringify({ email: usuario, password: senha })
       })
       if (resposta.ok) {
         alert('Login feito com sucesso!')
