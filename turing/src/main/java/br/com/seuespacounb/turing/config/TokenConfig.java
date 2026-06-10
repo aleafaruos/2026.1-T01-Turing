@@ -14,7 +14,7 @@ import java.util.Optional;
 @Component
 public class TokenConfig {
 
-    @Value("${api.security.token.secret")
+    @Value("minha-chave-super-secreta-do-projeto-turing-2026")
     private String secret;
 
     public String generateToken(Usuario usuario){
@@ -23,7 +23,7 @@ public class TokenConfig {
         return JWT.create()
                 .withClaim("userId", usuario.getId())
                 .withSubject(usuario.getEmail())
-//                .withClaim("role", usuario.getTipoUsuario().name())
+//                .withClaim("ROLE_", usuario.getTipoUsuario().name())
                 .withExpiresAt(Instant.now().plusSeconds(3600))
                 .withIssuedAt(Instant.now())
                 .sign(algorithm);
