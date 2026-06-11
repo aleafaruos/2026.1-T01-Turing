@@ -10,18 +10,19 @@ function Cadastro() {
 
       const [usuario, setUsuario] = useState('')
       const [email, setEmail] = useState('')
+      const [cpf, setCpf] = useState('')
       const [senha, setSenha] = useState('')
       const [erro, setErro] = useState('')
 
       async function handleCadastro() {
         setErro('')
         try {
-          const resposta = await fetch('http://localhost:8080/usuarios', {
+          const resposta = await fetch('http://localhost:8080/auth/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ usuario, email, senha })
+            body: JSON.stringify({ name: usuario, email, cpf , password: senha , tipoUsuario: 'CLIENTE'})
           })
 
           if (resposta.ok) {
@@ -53,6 +54,10 @@ function Cadastro() {
           <div className='inputs'>  
             <label>Email:</label>
             <input name='email' type='email' value={email} onChange={e => setEmail(e.target.value)} placeholder='Digite seu email...'/>
+          </div>
+          <div className='inputs'>
+            <label>CPF:</label>
+            <input name='cpf' type='text' value={cpf} onChange={e => setCpf(e.target.value)} placeholder='Digite seu Cpf...'/>
           </div>
           <div className='inputs'>  
             <label>Senha:</label>
